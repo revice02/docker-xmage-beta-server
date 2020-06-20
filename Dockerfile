@@ -39,7 +39,7 @@ RUN set -ex && \
 #Following code based on Dockerfile from goesta/docker-xmage-alpine 
 WORKDIR /xmage
 
-RUN curl --silent --show-error http://beta.xmage.today/files/mage-full_1.4.44.dev_2020-06-20_08-52.zip \
+RUN curl --silent --show-error http://xmage.today//config.json | jq '.XMage.location' | xargs curl -# -L > xmage.zip \
  && unzip xmage.zip -x "mage-client*" \
  && rm xmage.zip \
  && apk del curl jq
