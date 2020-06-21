@@ -11,7 +11,7 @@ docker run -d -it \
     --add-host example.com:0.0.0.0 \
     -e "XMAGE_DOCKER_SERVER_ADDRESS=example.com" \
     --restart unless-stopped \
-    revice02/docker-xmage-beta-server
+    revice/xmage-beta-server
 ```
 
 XMage needs to know the domain name the server is running on. The `--add-host` option adds an entry to the containers `/etc/hosts` file for this domain. Replace `example.com` with your server IP address or domain name address.
