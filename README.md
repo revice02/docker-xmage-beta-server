@@ -47,7 +47,7 @@ Add `--mount source=xmage-db,target=/xmage/mage-server/db` to your `docker run` 
 
 ---
 
-## Simple DNS setup for xMage
+## Simple DNS setup for XMage
 
 + Go to  https://nip.io/
 + Set the domain name to `magic-xxx.xxx.xxx.xxx.nip.io` as serverAddress (`xxx.xxx.xxx.xxx` is your public IP);
