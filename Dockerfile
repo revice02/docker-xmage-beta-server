@@ -1,30 +1,27 @@
-# XMage Version: 1.4.44.dev_2020-06-20_08-52
-# Based on official OpenJDK Docker library image
 FROM openjdk:8-jre-alpine
 
-# Build and config ENVs
-
-ENV JAVA_MIN_MEMORY=256M \
-	JAVA_MAX_MEMORY=512M \
+ENV JAVA_MIN_MEMORY=512M \
+    JAVA_MAX_MEMORY=3G \
+    JAVA_EXTENDED_OPTIONS="-XX:MaxPermSize=512m" \
     GLIBC_VERSION=2.27-r0 \
 	GLIBC_REPO=https://github.com/sgerrand/alpine-pkg-glibc \
     LANG=C.UTF-8 \
     XMAGE_DOCKER_SERVER_ADDRESS="0.0.0.0" \
     XMAGE_DOCKER_PORT="17171" \
-    XMAGE_DOCKER_SECONDARY_BIND_PORT="17179" \
+    XMAGE_DOCKER_SEONDARY_BIND_PORT="17179" \
     XMAGE_DOCKER_MAX_SECONDS_IDLE="600" \
     XMAGE_DOCKER_AUTHENTICATION_ACTIVATED="false" \
-    XMAGE_DOCKER_SERVER_NAME="mage-server" \
-	XMAGE_DOCKER_ADMIN_PASSWORD="liliana666" \
-	XMAGE_DOCKER_MAX_GAME_THREADS="10" \
-	XMAGE_DOCKER_MIN_USERNAME_LENGTH="3" \
-	XMAGE_DOCKER_MAX_USERNAME_LENGTH="14" \
-	XMAGE_DOCKER_MIN_PASSWORD_LENGTH="8" \
-	XMAGE_DOCKER_MAX_PASSWORD_LENGTH="100" \
-	XMAGE_DOCKER_MAILGUN_API_KEY="X" \
-	XMAGE_DOCKER_MAILGUN_DOMAIN="X"
+    XMAGE_DOCKER_SERVER_NAME="mage-beta-server" \
+    XMAGE_DOCKER_ADMIN_PASSWORD="liliana666" \
+    XMAGE_DOCKER_MAX_GAME_THREADS="10" \
+    XMAGE_DOCKER_MIN_USERNAME_LENGTH="3" \
+    XMAGE_DOCKER_MAX_USERNAME_LENGTH="14" \
+    XMAGE_DOCKER_MIN_PASSWORD_LENGTH="8" \
+    XMAGE_DOCKER_MAX_PASSWORD_LENGTH="100" \
+    XMAGE_DOCKER_MAILGUN_API_KEY="X" \
+    XMAGE_DOCKER_MAILGUN_DOMAIN="X" \
+    XMAGE_DOCKER_MADBOT_ENABLED=1
 
-#RUN based on anapsix/docker-alpine-java:8u172b11_server-jre
 RUN set -ex && \
     apk -U --no-cache upgrade && \
     apk --no-cache add --virtual dl-deps curl jq && \
@@ -36,7 +33,6 @@ RUN set -ex && \
     echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh && \
     /usr/glibc-compat/sbin/ldconfig /lib /usr/glibc-compat/lib
  
-#Following code based on Dockerfile from goesta/docker-xmage-alpine 
 WORKDIR /xmage
 
 RUN curl --silent --show-error http://xmage.today//config.json | jq '.XMage.location' | xargs curl -# -L > xmage.zip \
@@ -50,7 +46,7 @@ RUN chmod +x \
     /xmage/mage-server/startServer.sh \
     /xmage/mage-server/dockerStartServer.sh
 
-EXPOSE 17171 17179
+EXPOSE $XMAGE_DOCKER_PORT $XMAGE_DOCKER_SEONDARY_BIND_PORT
 
 WORKDIR /xmage/mage-server
 
