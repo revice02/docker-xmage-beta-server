@@ -2,7 +2,7 @@ FROM openjdk:8-jre-alpine
 
 ENV JAVA_MIN_MEMORY=512M \
     JAVA_MAX_MEMORY=3G \
-    JAVA_EXTENDED_OPTIONS="-XX:MaxPermSize=512m" \
+    JAVA_EXTENDED_OPTIONS="-XX:+UseG1GC -XX:+UseStringDeduplication -XX:G1HeapRegionSize=1m" \
     GLIBC_VERSION=2.27-r0 \
 	GLIBC_REPO=https://github.com/sgerrand/alpine-pkg-glibc \
     LANG=C.UTF-8 \
